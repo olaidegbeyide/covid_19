@@ -1,46 +1,51 @@
 const table = document.querySelector('.tablebody')
-const loadStatistics = async () =>  {
-    let coronaDetails = ``
-    await fetch('https://api.apify.com/v2/key-value-stores/Eb694wt67UxjdSGbc/records/LATEST?disableRedirect=true')
+const loadStatistics = async () => {
+  let coronaDetails = ``
+  await fetch('https://api.apify.com/v2/key-value-stores/Eb694wt67UxjdSGbc/records/LATEST?disableRedirect=true')
     .then(res => res.json())
     .then(data => {
-        coronaDetails += `
+      coronaDetails += `
         <tr>
-         
-          <td><b>${data.infected}</b></td>
-          <td><b>${data.recovered}</b></td>
-          <td><b>${data.deceased}</b></td>
+          <td><b>${ numberWithCommas(data.infected)}</b></td>
+          <td><b>${numberWithCommas(data.recovered)}</b></td>
+          <td><b>${numberWithCommas(data.deceased)}</b></td>
         </tr>
         `
     })
-    table.innerHTML = coronaDetails
+  table.innerHTML = coronaDetails
 
 }
 
 loadStatistics()
 
 
+var infected = document.querySelector('.infected')
+var recovered = document.querySelector('.recovered')
+var deceased = document.querySelector('.deceased')
 
-var _infected = document.querySelector('.infected')
-var _recovered = document.querySelector('.recovered')
-var _deceased = document.querySelector('.deceased')
-var arr = [];
 
-const loadStatistic = async () =>  {
-    await fetch('https://api.apify.com/v2/key-value-stores/tVaYRsPHLjNdNBu7S/records/LATEST?disableRedirect=true')
-    .then(res => res.json())
-    .then(data => {
-  let infected_cases = data.filter(mydata => mydata.infected).map(mydata => mydata.infected && mydata.infected !== 'NA' ).reduce((a,b) => a + b);
-  let recovered_cases = data.filter(mydata => mydata.recovered).map(mydata => mydata.recovered && mydata.recovered !== 'NA' ).reduce((a,b) => a + b);
-  let deceased_cases = data.filter(mydata => mydata.deceased).map(mydata => mydata.deceased && mydata.deceased !== 'NA' ).reduce((a,b) => a + b);
-  
-  _infected.innerHTML = infected_cases;
-  _recovered.innerHTML = recovered_cases;
-  _deceased.innerHTML = deceased_cases;
-})
-
+const numberWithCommas = (x) => {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
-loadStatistic()
+const loadStatistic = async () => {
+  await fetch('https://api.apify.com/v2/key-value-stores/tVaYRsPHLjNdNBu7S/records/LATEST?disableRedirect=true')
+    .then(res => res.json())
+    .then(data => {
+      console.log(data);
+      
+      let _infected = data.filter(o => o.infected).map(o => o.infected).reduce((a, b) => a + b)
+      let _recovered = data.filter(o => o.recovered && o.recovered !== "NA").map(o => o.recovered).reduce((a, b) => a + b)
+      let _deceased = data.filter(o => o.deceased && o.deceased !== "NA").map(o => o.deceased).reduce((a, b) => a + b)
+
+      infected.innerHTML = `<b>${numberWithCommas(_infected)}</b>`
+      recovered.innerHTML = `<b> ${numberWithCommas(_recovered)}</b>`
+      deceased.innerHTML = `<b> ${numberWithCommas(_deceased)} </b> `
+
+    })
+}
+
+
+loadStatistic();
 
 
