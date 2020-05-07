@@ -49,3 +49,23 @@ const loadStatistic = async () => {
 loadStatistic();
 
 
+const select_country = document.getElementById('myselect');
+
+const loadCountries = async () => {
+        var html = ``
+    await fetch('https://api.apify.com/v2/key-value-stores/tVaYRsPHLjNdNBu7S/records/LATEST?disableRedirect=true')
+    .then(res => res.json())
+    .then(data => {
+        console.log(data);
+        data.map(_data => {
+            
+            
+            html += `<option value=${_data.country}>${_data.country} </option>
+            
+        `
+        })
+        select_country.innerHTML = html
+    })
+}
+
+loadCountries();
