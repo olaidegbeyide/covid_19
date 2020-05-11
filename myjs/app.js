@@ -32,7 +32,6 @@ const loadStatistic = async () => {
   await fetch('https://api.apify.com/v2/key-value-stores/tVaYRsPHLjNdNBu7S/records/LATEST?disableRedirect=true')
     .then(res => res.json())
     .then(data => {
-      console.log(data);
       
       let _infected = data.filter(o => o.infected).map(o => o.infected).reduce((a, b) => a + b)
       let _recovered = data.filter(o => o.recovered && o.recovered !== "NA").map(o => o.recovered).reduce((a, b) => a + b)
@@ -58,14 +57,24 @@ const loadCountries = async () => {
     .then(data => {
         console.log(data);
         data.map(_data => {
+            html += `<option value=${_data.country}> ${_data.country} </option>`
             
-            
-            html += `<option value=${_data.country}>${_data.country} </option>
-            
-        `
         })
-        select_country.innerHTML = html
+       select_country.innerHTML = html
+        
+     
     })
+   
 }
 
 loadCountries();
+
+
+select_country.addEventListener('change',  () => {
+  alert(`${mydata.country}`);
+  })
+
+
+
+
+
