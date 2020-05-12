@@ -33,5 +33,13 @@
   text-align: center;
 }
 #myselect {
-  padding: 15px;
+  padding: 10px;
+  border-radius: 5px;
+  margin-left: 25px;
+  margin-bottom: 20px;
+}
+.sec-third-para {
+  font-size: 20px;
+  margin-left: 20px;
+  font-weight: 500;
 }
