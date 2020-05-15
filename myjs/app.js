@@ -53,7 +53,9 @@ const loadCountries = async () => {
     .then(data => {
         console.log(data);
         data.map(_data => {
-            html += `<option value=${_data.country}> ${_data.country} </option>`
+            html += `<option > ${_data.country} </option>`
+            console.log();
+            
             })
        select_country.innerHTML = html
         })
